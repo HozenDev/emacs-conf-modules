@@ -21,3 +21,6 @@
 
 # not ignore images
 !/img
+
+# not ignore images
+!/var
