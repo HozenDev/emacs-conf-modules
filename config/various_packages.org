@@ -1,0 +1,153 @@
+#+TITLE : Various packages config file emacs
+#+AUTHOR : DUREL Enzo
+#+EMAIL : enzo.durel@gmail.com
+
+* projectile
+
+#+begin_src emacs-lisp 
+  (use-package projectile
+    :ensure t
+    :init
+    (projectile-mode 1))  
+#+end_src
+
+* smartparens
+
+Smart Parens mode, autocomplete items pairs ex: "", (), ''...
+
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :config
+    (smartparens-global-mode t)
+
+    (sp-pair "'" nil :actions :rem)
+    (sp-pair "`" nil :actions :rem)
+    (setq sp-highlight-pair-overlay nil))
+
+  (global-set-key (kbd "C-c r") 'sp-rewrap-sexp)
+  (global-set-key (kbd "C-c s") 'sp-splice-sexp)
+  (global-set-key (kbd "C-c f") 'sp-forward-sexp)
+  (global-set-key (kbd "C-c b") 'sp-backward-sexp)
+
+  (defun indent-between-pair (&rest _ignored)
+    (newline)
+    (indent-according-to-mode)
+    (forward-line -1)
+    (indent-according-to-mode))
+
+  (sp-local-pair 'prog-mode "{" nil :post-handlers '((indent-between-pair "RET")))
+  (sp-local-pair 'prog-mode "[" nil :post-handlers '((indent-between-pair "RET")))
+  (sp-local-pair 'prog-mode "(" nil :post-handlers '((indent-between-pair "RET")))
+#+end_src
+
+* beacon
+
+highlight cursor when changing window
+
+#+begin_src emacs-lisp
+  (use-package beacon
+    :ensure
+    :diminish
+    :config
+    (setq beacon-blink-delay 0.1)
+    (setq beacon-blink-duration 0.25)
+    (setq beacon-size 20))
+  (beacon-mode 1) ;; uncomment to activate
+
+#+end_src
+
+* macros
+
+Load macros lisp files
+
+#+begin_src emacs-lisp
+  ;; (load-file "~/.emacs.d/mes_macros.el")
+#+end_src
+ 
+* undo-tree
+ 
+Arborescence des contrôles effectuer
+
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :config
+    (progn
+      (global-undo-tree-mode)
+      (setq undo-tree-visualizer-timestamps t)
+      (setq undo-tree-visualizer-diff t)
+      (setq undo-tree-auto-save-history nil))
+    )
+#+end_src
+   
+* which-key
+
+Print all keys available when press a special key (SPC, C, M...)
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :config (which-key-mode)
+    :diminish)
+#+end_src
+ 
+* ace-link
+
+#+begin_src emacs-lisp
+  (use-package ace-link
+    :config
+    (ace-link-setup-default))
+#+end_src
+
+* ace-window
+
+Package to move between frames with letters or numbers draw in top left
+corner of the frame.
+
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :init (progn (global-set-key [remap other-window] 'ace-window))
+    :diminish) 
+
+  (global-set-key (kbd "M-o") 'ace-window)
+  (setq aw-keys '(?q ?s ?d ?f ?g ?h ?j ?k ?l))
+#+end_src
+
+* avy
+
+search and go to a or many characters visually displayed in frames.
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :ensure t
+    :diminish)
+#+end_src
+
+* mark-multiple
+
+mark the next occurence of selected text
+
+#+begin_src emacs-lisp
+  (use-package mark-multiple
+    :ensure t
+    ;; :bind ("C-c q" . 'mark-next-like-this)
+    )
+#+end_src    
+    
+* yasnippet
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    ;; :hook (prog-mode . yas-minor-mode) ;; only in prog mode
+    :config
+    (yas-reload-all)
+    (yas-global-mode 1) ;; global mode
+    (setq yas-triggers-in-field t) ;; call snippets in snippets
+    )
+
+  (use-package yasnippet-snippets ;; a pack of snippets
+    :diminish)
+#+end_src
+

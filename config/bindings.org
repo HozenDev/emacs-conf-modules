@@ -1,0 +1,61 @@
+#+TITLE : Bindings config file emacs
+#+AUTHOR : DUREL Enzo
+#+EMAIL : enzo.durel@gmail.com
+
+* Keys Binding
+** Xah Fly Keys
+*** Init
+
+Initialisation of Xah Fly Keys package
+Set to azerty
+
+#+begin_src emacs-lisp
+  (use-package xah-fly-keys
+    :straight (xah-fly-keys
+               :type git
+               :host github
+               :repo "xahlee/xah-fly-keys"))
+
+  (require 'xah-fly-keys)
+
+  ;; specify a layout
+  (xah-fly-keys-set-layout "azerty")
+  (xah-fly-keys 1)
+#+end_src
+
+*** Xah Fly Key Map
+
+Add or redefine some commande shortcuts
+
+#+begin_src emacs-lisp
+  (define-key xah-fly-leader-key-map (kbd "w") 'cp/org-edit-special-capture-src-dwim)
+  (define-key xah-fly-leader-key-map (kbd "a") 'avy-goto-char-timer)
+  (define-key xah-fly-leader-key-map (kbd "l a") 'ace-window)
+  (define-key xah-fly-leader-key-map (kbd "l x") 'mark-next-like-this)
+  (define-key xah-fly-leader-key-map (kbd "i u") 'hz/open-in-terminal)
+  (define-key xah-fly-leader-key-map (kbd "_") 'shell-pop)
+#+end_src
+
+*** Server command mode fix
+
+#+begin_src emacs-lisp
+  ;; 2021-03-10 this fix the problem of: when emacs start as daemon, xah fly keys is not in command mode. thx to David Wilson (daviwil)
+
+  (defun hz/server-fix-up()
+    "Make sure 'xah-fly-keys' is starting in command-mode.
+
+  https://github.com/xahlee/xah-fly-keys/issues/103
+  https://github.com/daviwil/emacs-from-scratch/blob/master/show-notes/Emacs-Tips-08.org#configuring-the-ui-for-new-frames"
+
+    (xah-fly-keys-set-layout "azerty")
+    (xah-fly-keys t)
+
+    (define-key xah-fly-leader-key-map (kbd "w") 'cp/org-edit-special-capture-src-dwim)
+    (define-key xah-fly-leader-key-map (kbd "a") 'avy-goto-char-timer)
+    (define-key xah-fly-leader-key-map (kbd "l a") 'ace-window)
+    (define-key xah-fly-leader-key-map (kbd "i u") 'zen-open-in-terminal)
+    (define-key xah-fly-leader-key-map (kbd "_") 'shell-pop))
+
+  (if (daemonp)
+      (add-hook 'server-after-make-frame-hook 'hz/server-fix-up))
+#+end_src

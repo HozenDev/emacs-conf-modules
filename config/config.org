@@ -1,0 +1,140 @@
+#+TITLE : My Emacs Config
+#+AUTHOR : DUREL Enzo
+#+EMAIL : enzo.durel@gmail.com
+
+Config works on 14 july 2023 with Emacs 28.2
+
+* Begin Message
+
+#+begin_src emacs-lisp
+  (message "Configuration is loading...")
+#+end_src
+
+* Generic
+*** Home path
+
+#+begin_src emacs-lisp
+  (defconst path-home-dir (file-name-as-directory (getenv "HOME"))
+    "Path to user home directory. In a nutshell, it's just a value of $HOME.")
+#+end_src
+
+*** Config path
+
+#+begin_src emacs-lisp
+(setq config-directory (expand-file-name "config/" user-emacs-directory))
+#+end_src
+
+*** Lisp path
+
+#+begin_src emacs-lisp
+  (defconst lisp-directory (expand-file-name "lisp/" user-emacs-directory)
+    "Path to user lisp personnal package directory.")
+#+end_src
+
+*** Image path
+
+#+begin_src emacs-lisp
+    (defconst image-directory (expand-file-name "img/" user-emacs-directory)
+      "Path to user image directory.")
+#+end_src
+
+*** Message
+
+#+begin_src emacs-lisp
+  (message "Paths setted")
+#+end_src
+
+** Diminish
+
+This package implements hiding or abbreviation of the mode line displays (lighters) of minor-modes.
+
+#+begin_src emacs-lisp 
+  (use-package diminish)
+#+end_src
+
+** Access
+
+Acces au fichier config.org
+
+#+begin_src emacs-lisp
+  (defun hz/config-visit ()
+    "Open and go config.org"
+    (interactive)
+    (find-file (expand-file-name "config.org" config-directory)))
+#+end_src
+
+** Reload
+
+Reload config
+
+#+begin_src emacs-lisp
+  (defun hz/config-reload ()
+    "Reloads ~/.emacs.d/config.org at runtime"
+    (interactive)
+    (org-babel-load-file (expand-file-name "config.org" config-directory)))
+#+end_src
+
+* Modules
+** Programmation
+
+#+begin_src emacs-lisp
+  (message "programmation module is loading...")
+  (org-babel-load-file (expand-file-name "prog.org" config-directory))
+  (message "programmation module loaded")
+#+end_src
+
+** Orgmode
+
+#+begin_src emacs-lisp
+  (message "orgmode module is loading...")
+  (org-babel-load-file (expand-file-name "orgmode.org" config-directory))
+  (message "orgmode module loaded")
+#+end_src
+
+** Various
+*** Packages
+
+#+begin_src emacs-lisp
+  (message "various:packages module is loading...")
+  (org-babel-load-file (expand-file-name "various_packages.org" config-directory))
+  (message "various:packages module loaded")
+#+end_src
+
+*** Functions
+
+#+begin_src emacs-lisp
+  (message "various:functions module is loading...")
+  (org-babel-load-file (expand-file-name "various_functions.org" config-directory))
+  (message "various:functions module loaded")
+#+end_src
+
+** Default changes
+
+#+begin_src emacs-lisp
+  (message "default module is loading...")
+  (org-babel-load-file (expand-file-name "default.org" config-directory))
+  (message "default module loaded")
+#+end_src
+
+** Theme
+
+#+begin_src emacs-lisp
+  (message "theme module is loading...")
+  (org-babel-load-file (expand-file-name "theme.org" config-directory))
+  (message "theme module loaded")
+#+end_src
+
+** Keys Binding
+
+#+begin_src emacs-lisp
+  (message "bindings module is loading...")
+  (org-babel-load-file (expand-file-name "bindings.org" config-directory))
+  (message "bindings module loaded")
+#+end_src
+
+* End Message                                                      :noexport:
+
+#+begin_src emacs-lisp
+  (message "Configuration is loaded")
+#+end_src
+

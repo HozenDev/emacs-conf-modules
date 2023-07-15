@@ -1,0 +1,269 @@
+#+TITLE : Theme config file emacs
+#+AUTHOR : DUREL Enzo
+#+EMAIL : enzo.durel@gmail.com
+
+* Theme
+** icons
+*** all-the-icons
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    :if (display-graphic-p))
+#+end_src
+
+*** vscode icons
+
+Use vscode icons for dired sidebar for example
+
+#+begin_src emacs-lisp
+  ;; (use-package vscode-icon
+  ;;   :ensure t
+  ;;   :commands (vscode-icon-for-file))
+#+end_src
+
+** highlight current line
+
+#+begin_src emacs-lisp
+  (global-hl-line-mode 1)
+#+end_src
+
+** colors
+
+Change the cursor color and some font foreground color
+
+*** term
+
+#+begin_src emacs-lisp
+  (defun load-term-colors ()
+    ;; terminal theme
+
+    (set-face-background 'hl-line "#333333")
+    (set-face-foreground 'highlight nil)
+
+    (set-face-foreground 'font-lock-variable-name-face "#E8E3BA")
+    (set-face-foreground 'font-lock-type-face "#93EBB9")
+    (set-face-foreground 'font-lock-string-face "#53C673")
+    (set-face-foreground 'font-lock-comment-face "#9BD3F8")
+    (set-face-foreground 'font-lock-function-name-face "salmon")
+    (set-face-foreground 'font-lock-builtin-face "#DBB670")
+    (set-face-foreground 'font-lock-constant-face "#EECBC9")
+    (set-face-foreground 'font-lock-negation-char-face "#EECBC9")
+    (set-face-foreground 'font-lock-keyword-face "#7A8799")
+    (set-face-foreground 'font-lock-doc-face "#3d77ff")
+
+    )
+
+#+end_src
+
+*** gui
+
+#+begin_src emacs-lisp
+
+  (defun load-gui-colors ()
+    ;; GUI theme
+    ;; change cursor color
+    (set-cursor-color "salmon")
+    (setq default-frame-alist '((cursor-color . "salmon")))
+
+    ;; change font foreground color
+    (add-to-list 'default-frame-alist '(background-color . "#192024"))
+    (add-to-list 'default-frame-alist '(foreground-color . "#AEC2E0"))
+    (set-face-attribute 'default nil :background "#192024")
+
+    ;; code highlighting
+    (set-face-foreground 'font-lock-variable-name-face "#E8E3BA")
+    (set-face-foreground 'font-lock-type-face "#93EBB9")
+    (set-face-foreground 'font-lock-string-face "#53C673")
+    (set-face-foreground 'font-lock-comment-face "#9BD3F8")
+    (set-face-foreground 'font-lock-function-name-face "salmon")
+    (set-face-foreground 'font-lock-builtin-face "#DBB670")
+    (set-face-foreground 'font-lock-constant-face "#EECBC9")
+    (set-face-foreground 'font-lock-negation-char-face "#EECBC9")
+    (set-face-foreground 'font-lock-keyword-face "#7A8799")
+    (set-face-foreground 'font-lock-doc-face "#3d77ff")
+
+    ;; attributes faces
+    (set-face-attribute 'region nil :background "#0d1214" :foreground "#FFE792")
+    (set-face-attribute 'minibuffer-prompt nil :foreground "salmon")
+    (set-face-attribute 'fringe nil :background "#192024")
+
+    (set-face-background 'hl-line "#202b30")
+    (set-face-foreground 'highlight nil)
+
+    (set-face-attribute 'line-number nil
+			:foreground "#3c535c" 
+			:background "#202b30")
+    (set-face-attribute 'line-number-current-line nil
+			:foreground "salmon" 
+			:background "#485061")
+    )
+#+end_src     
+    
+** mode-line
+*** theme
+     
+Change the mode-line appearance (line at bottom)
+
+#+begin_src emacs-lisp
+  (defun load-gui-modeline ()
+    ;; gui theme modeline
+    (set-face-attribute 'mode-line t :background "#324357" :foreground "white" :box '(:line-width 4 :color "#324357"))
+    (set-face-attribute 'mode-line-inactive t :background "black" :foreground "gray50" :box '(:line-width 4 :color "black"))
+    (set-face-attribute 'mode-line-buffer-id t :foreground "#95cc5e")
+    )
+
+  (defun load-term-modeline ()
+    ;; term theme modeline
+    (set-face-attribute 'mode-line t :background "#000000" :foreground "white")
+    (set-face-attribute 'mode-line-inactive t :background "black" :foreground "gray50")
+    (set-face-attribute 'mode-line-buffer-id t :foreground "white")
+    )
+#+end_src
+
+*** default-changes
+
+add time in mode-line
+
+#+begin_src emacs-lisp
+  (setq display-time-format "  ~ %T ")
+  (setq display-time-interval 1)
+  (setq display-time-default-load-average nil)
+  (display-time-mode 1)
+  ;; (setq mode-line-position (list "%l:%c %p"))
+
+  (setq battery-mode-line-format "  ~ %b%p%%, %t ")
+  (setq battery-update-interval 100)
+  (display-battery-mode 1)
+#+end_src
+
+*** mood-line
+
+mood-line package
+
+#+begin_src emacs-lisp
+  (use-package mood-line
+    :ensure t
+    :init
+    (mood-line-mode))
+#+end_src
+
+** org block change
+
+Change background color of org blocks (src, example, quote, ...)
+
+*** term
+
+#+begin_src emacs-lisp
+  (defun load-term-org ()
+    ;; org terminal theme
+    )
+#+end_src
+
+*** gui
+
+#+begin_src emacs-lisp
+  (defun load-gui-org ()
+    ;; org gui theme
+
+    ;; Org Block change
+    (set-face-attribute 'org-block-begin-line t :background "#343f4a" :extend t)
+    (set-face-attribute 'org-block t :background "#1d242b" :extend t)
+    (set-face-attribute 'org-block-end-line t :background "#343f4a" :extend t)
+    )
+#+end_src
+
+** load-theme
+
+#+begin_src emacs-lisp
+  (defun load-gui-theme ()
+    ;; load theme GUI spec
+    (load-gui-colors)
+    (load-gui-org)
+    (load-gui-modeline)
+    )
+
+  (defun load-term-theme ()
+    ;; load theme Terminal spec
+    (load-term-colors)
+    (load-term-org)
+    (load-term-modeline)
+    )
+
+  (if (display-graphic-p)
+      (load-gui-theme)
+    (load-term-theme))
+
+  (if (daemonp) (load-gui-theme))
+#+end_src
+
+** pretty mode
+
+Change some specifics code symbols to pretty one (NULL, ->, ...)
+
+#+begin_src emacs-lisp
+  ;; (when window-system
+  ;; 	      (use-package pretty-mode
+  ;; 	      :ensure t
+  ;; 	      :config
+  ;; 	      (global-pretty-mode t))
+#+end_src
+      
+** ewal
+
+#+begin_src emacs-lisp
+  ;; (use-package ewal
+  ;; 	      :init (setq ewal-use-built-in-always-p nil
+  ;; 			      ewal-use-built-in-on-failure-p t
+  ;; 			      ewal-built-in-palette "sexy-material"))
+  ;; (use-package ewal-spacemacs-themes
+  ;; 	      :config (progn
+  ;; 		(load-theme 'ewal-spacemacs-modern t)
+  ;; 		(enable-theme 'ewal-spacemacs-modern)))
+#+end_src
+
+** dashboard
+
+Dashboard (opening frame, buffer)
+
+#+begin_src emacs-lisp
+  (defun hz/dashboard-banner ()
+    (setq dashboard-banner-logo-title
+          (format "Emacs ready in %.2f seconds with %d garbage collections."
+                  (float-time (time-subtract after-init-time before-init-time)) gcs-done))
+    )
+
+  (use-package dashboard
+    :init
+    (add-hook 'after-init-hook 'dashboard-refresh-buffer)
+    (add-hook 'dashboard-mode-hook 'hz/dashboard-banner)
+    :config
+    (setq dashboard-center-content t)
+    (setq dashboard-init-info " [DASHBOARD] [CONFIG: C-c e] ")
+    (setq dashboard-set-footer nil)
+    (setq dashboard-startup-banner (expand-file-name "hozen_emacs.png" image-directory))
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
+                                                       :height 1.1
+                                                       :v-adjust -0.05
+                                                       :face 'font-lock-keyword-face))
+    (setq dashboard-items '(
+                            (projects . 5)
+                            (recents  . 5)
+                            (bookmarks . 5)))
+    (setq dashboard-image-banner-max-width 600)
+    (setq dashboard-image-banner-max-height 500)
+    (dashboard-setup-startup-hook))
+
+
+  ;; (use-package dashboard
+  ;;   :ensure t
+  ;;   :config
+  ;;   (dashboard-setup-startup-hook)
+  ;;   (setq dashboard-startup-banner "~/.emacs.d/img/hozen_emacs.png")
+
+  ;;   )
+
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+
+#+end_src

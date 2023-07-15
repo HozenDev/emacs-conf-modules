@@ -1,0 +1,23 @@
+# ignore everything (dirs, files, sub-dirs, sub-files)
+/*
+
+# but do not ignore the .gitignore file
+!/.gitignore
+
+# not ignore readme file
+!/readme.org
+
+# not ignore all .el files (config files)
+!/init.el
+!/early-init.el
+
+# not ignore config files
+!/config
+/config/*
+!/config/*.org
+
+# not ignore lisp dir
+!/lisp
+
+# not ignore images
+!/img

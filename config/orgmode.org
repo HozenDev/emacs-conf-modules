@@ -1,0 +1,140 @@
+#+TITLE : Theme config file emacs
+#+AUTHOR : DUREL Enzo
+#+EMAIL : enzo.durel@gmail.com
+
+* Orgmode
+** no tab on python (problem)
+
+#+begin_src emacs-lisp
+  (setq-default indent-tabs-mode nil)
+#+end_src
+
+** org package
+
+#+begin_src emacs-lisp
+  (use-package org :straight (:type built-in))
+#+end_src
+
+** org-contrib
+
+#+begin_src emacs-lisp
+  (use-package org-contrib
+    :config
+    (require 'ox-extra)
+    (use-package ox-extra
+      :config
+      (ox-extras-activate '(latex-header-blocks ignore-headlines))))
+#+end_src
+
+** ox-extra
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org-contrib
+    (require 'ox-extra)
+    (ox-extras-activate '(ignore-headlines))
+    )
+#+end_src
+
+** beautiful-bubbles 
+
+#+begin_src emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    :diminish)
+  ;; (setq org-bullets-bullet-list '("■" "◆" "▲" "▶"))
+  (setq org-bullets-bullet-list '("*" "*" "*" "*"))
+#+end_src
+
+** execute without validation
+
+#+begin_src emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+** org-babel
+
+Define org src available languages
+
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((ditaa      . t)
+     (C          . t)
+     ;; (dot        . t)
+     (emacs-lisp . t)
+     ;; (scheme     . t)
+     ;; (gnuplot    . t)
+     ;; (haskell    . t)
+     (latex      . t)
+     (js         . t)
+     ;;     (ledger     . t)
+     ;; (matlab     . t)
+     ;; (ocaml      . t)
+     ;; (octave     . t)
+     ;; (plantuml   . t)
+     (python     . t)
+     ;; (R          . t)
+     (ruby       . t)
+     ;; (scrpeen     . nil)
+     (shell      . t)
+     (sql        . t)
+     (sqlite     . t)))
+  (setq org-babel-python-command "python3")
+  (setq org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0.11.jar")
+#+end_src
+
+** org tab indent
+
+Indent in org block
+
+#+begin_src emacs-lisp
+  (setq org-src-tab-acts-natively t)
+#+end_src
+
+** org hook
+
+#+begin_src emacs-lisp 
+  (defun hz/org-mode-hook ()
+    (visual-line-mode 1) ;; print a line on few lines when too long
+    )
+  (add-hook 'org-mode-hook 'hz/org-mode-hook)
+#+end_src
+
+** export browser
+
+Export orgmode in specified browser, here firefox
+
+#+begin_src emacs-lisp
+  (add-to-list 'org-file-apps '("pdf" . "firefox %s"))
+  (add-to-list 'org-file-apps '("html" . "firefox %s"))
+#+end_src
+
+** edit org block code
+
+#+begin_src emacs-lisp
+  (defun cp/org-edit-special-capture-src-dwim ()
+    (interactive)
+    (cond
+     (org-src-mode (org-edit-src-exit))
+     ((org-in-src-block-p) (org-edit-special))
+     ((derived-mode-p 'org-mode)
+      (org-insert-structure-template "src emacs-lisp")
+      (org-edit-special)
+      )))
+#+end_src
+
+** org mode syntax highlight
+
+Set listings environment for syntax highlighting (begin_src)
+If minted a small python program is needed to run correctly minted: Pygments
+
+#+begin_src emacs-lisp
+  (setq org-latex-listings 'listings)
+  (add-to-list 'org-latex-packages-alist '("" "listings"))
+
+  ;; (setq org-latex-listings 'minted)
+  ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
+  ;; (setq org-latex-pdf-process
+  ;;       '("%latex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+#+end_src

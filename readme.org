@@ -1,0 +1,30 @@
+* Ma Config Emacs
+** Résumé
+
+Fichiers de configuration de mon emacs. Divisé en modules de configuration =config/*.org=
+
+** Installation
+
+#+begin_src shell
+  git clone [url]
+#+end_src
+
+** Outils
+
+- Emacs
+
+** Versions
+
+*Dernière version stable :* 1.0
+
+*Dernière version :* 1.0
+
+[[../../tags][Liste des versions]]
+
+** Auteurs
+
+- DUREL Enzo
+
+** Licence
+
+Le projet est *open-source*

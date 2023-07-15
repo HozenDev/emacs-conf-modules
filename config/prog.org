@@ -1,0 +1,344 @@
+#+TITLE : Programming config file emacs
+#+AUTHOR : DUREL Enzo
+#+EMAIL : enzo.durel@gmail.com
+
+* LSP
+** lsp-mode
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :hook (((
+             typescript-mode
+             js2-mode
+             web-mode
+             c-mode
+             python-mode
+             java-mode
+             )
+            . lsp)
+
+           ;; compatibilité avec which-key
+           (lsp-mode . lsp-enable-which-key-integration)
+           )
+    :config
+    ;; pour mapper lsp-command-map
+    (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
+
+    ;;pour de meilleurs performances
+    ;; (setq gc-cons-threshold 100000000)
+    ;; (setq read-process-output-max (* 1024 1024)) ;; 1mb
+    ;; (setq lsp-idle-delay 0.500)
+    (setq lsp-log-io nil) ; if set to true can cause a performance hit
+    ;; les options, voir le lien au dessus
+    ;; (setq lsp-ui-doc-enable nil)
+    ;; (setq lsp-ui-doc-show-with-cursor nil) ;; enlever les gros pavés qui se mettent à chaque fois
+    )
+#+end_src
+
+** lsp-ui
+
+UI manager
+
+#+begin_src emacs-lisp
+  (use-package lsp-ui
+    :commands lsp-ui-mode
+    :config
+    (setq lsp-ui-doc-enable nil)
+    (setq lsp-ui-doc-header t)
+    (setq lsp-ui-doc-include-signature t)
+    (setq lsp-ui-doc-border (face-foreground 'default))
+    (setq lsp-ui-sideline-show-code-actions t)
+    (setq lsp-ui-sideline-delay 0.05)
+    (setq lsp-headerline-breadcrumb-enable nil)
+    (setq lsp-modeline-code-actions-enable nil))
+#+end_src
+
+** lsp-treemacs
+
+Gestion de l'arborescence des fichiers sur le côté
+
+#+begin_src emacs-lisp
+  (use-package lsp-treemacs
+    :after lsp
+    :config
+    ;; (lsp-treemacs-sync-mode 1)	 
+    )
+#+end_src
+
+** lsp-pyright
+
+Define pyright for python server
+
+#+begin_src emacs-lisp
+  (use-package lsp-pyright
+    :hook (python-mode . (lambda () (require 'lsp-pyright)))
+    :init (when (executable-find "python3")
+	    (setq lsp-pyright-python-executable-cmd "python3")))
+#+end_src
+
+** lsp-java
+    
+Define default java server
+
+#+begin_src emacs-lisp
+  (use-package lsp-java
+    :after lsp)
+#+end_src
+
+** lsp-rust
+
+#+begin_src emacs-lisp
+  (add-hook 'rust-mode-hook 'eglot-ensure)
+  (add-hook 'rust-mode-hook #'lsp)
+#+end_src
+
+* Languages
+** C
+*** indenting
+
+Indenting by 4 instead by default 2
+
+#+begin_src emacs-lisp
+  (setq c-default-style "linux"
+	c-basic-offset 4
+	tab-width 4
+	indent-tabs-mode t)
+#+end_src
+
+** Python
+** Bash
+*** Disable horrible shell colors
+
+#+begin_src emacs-lisp
+  (use-package xterm-color
+    :ensure t
+    :config
+    (setq comint-output-filter-functions
+	  (remove 'ansi-color-process-output comint-output-filter-functions))
+
+    (add-hook 'shell-mode-hook
+	      (lambda () (add-hook 'comint-preoutput-filter-functions
+				   'xterm-color-filter nil t))))
+#+end_src
+
+*** shell-pop
+
+Toggle a shell in a small frame below the current frame
+
+#+begin_src emacs-lisp
+  (use-package shell-pop
+    :ensure t
+    :config
+    )
+
+  (global-set-key (kbd "C-c p") 'shell-pop)
+#+end_src
+
+** Rust
+*** rust-mode
+
+#+begin_src emacs-lisp
+    (use-package rust-mode
+      ;; :hook (rust-mode . lsp)
+      ;; :bind
+      ;; ("C-c g" . rust-run)
+      ;; ("C-c t" . rust-test)
+      ;; ("C-c b" . cargo-process-build)
+      :init
+      (which-function-mode 1)
+      :config
+      (setq rust-format-on-save t))
+
+    ;; Add keybindings for interacting with Cargo
+    (use-package cargo
+      :hook (rust-mode . cargo-minor-mode)
+      :diminish cargo-minor-mode)
+
+    (use-package flycheck-rust
+      :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+#+end_src
+
+** LaTeX
+*** LaTeX indentation
+
+#+begin_src emacs-lisp
+  (setq LaTeX-item-indent 0)
+#+end_src   
+
+** Markdown
+*** Markdown mode
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :ensure
+    :preface
+    (defun my/markdown-set-ongoing-hydra-body ()
+      (setq my/ongoing-hydra-body 'hydra-markdown/body))
+    :mode
+    ("INSTALL\\'"
+     "CONTRIBUTORS\\'"
+     "LICENSE\\'"
+     "README\\'"
+     "\\.markdown\\'"
+     "\\.md\\'")
+    :hook
+    (markdown-mode . my/markdown-set-ongoing-hydra-body)
+    :custom
+    (markdown-asymmetric-header t)
+    (markdown-split-window-direction 'right)
+    :config
+    (unbind-key "M-<down>" markdown-mode-map)
+    (unbind-key "M-<up>" markdown-mode-map))
+#+end_src
+
+** Web
+*** htmlize
+
+#+begin_src emacs-lisp
+  (use-package htmlize
+    :ensure t)
+#+end_src
+
+*** web-mode
+
+#+begin_src emacs-lisp
+  (use-package web-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.ftl?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.rasi?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
+    (setq web-mode-engines-alist
+	  '(("django" . "\\.html\\'")))
+    (setq web-mode-ac-sources-alist
+	  '(("css" . (ac-source-css-property))
+	    ("vue" . (ac-source-words-in-buffer ac-source-abbrev))
+	    ("html" . (ac-source-words-in-buffer ac-source-abbrev))
+	    ("rasi" . (ac-source-css-property))))
+    (setq web-mode-enable-css-colorization t)
+    (setq web-mode-enable-sql-detection t)
+    (setq web-mode-enable-current-element-highlight t)
+    (setq web-mode-enable-auto-closing t)
+    (setq web-mode-enable-auto-quoting t)
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-enbale-auto-pairing t))
+#+end_src
+
+** Scheme
+
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name "quack/" lisp-directory))
+  ;; The binary of your interpreter
+  (setq scheme-program-name "racket")
+
+  ;; This hook lets you use your theme colours instead of quack's ones.
+  ;; Key to evaluate function :
+  (defun scheme-mode-quack-hook ()
+    (require 'quack)
+    (setq quack-fontify-style 'emacs)
+    (setq quack-default-program "mit-scheme"))
+  (add-hook 'scheme-mode-hook 'scheme-mode-quack-hook)
+#+end_src
+
+** Lisp
+*** paredit
+
+Paredit pour la gestion des parenthéses en lisp
+
+#+begin_src emacs-lisp
+  (use-package paredit
+    :ensure t
+    :init
+    (dolist (hook '(emacs-lisp-mode-hook lisp-mode-hook clojure-mode-hook scheme-mode-hook))
+      (add-hook hook 'paredit-mode))
+    :diminish paredit-mode)
+#+end_src
+
+** Processing
+
+Processing mode
+
+#+begin_src emacs-lisp
+  (use-package processing-mode
+    :ensure t)
+  (setq processing-location "/mnt/data/perso/programmes/processing-3.5.4/processing-java")
+  (setq processing-application-dir "/mnt/data/perso/programmes/processing-3.5.4/processing")
+  (setq processing-sketchbook-dir "/home/hozen/sketchbook")
+#+end_src
+
+* Company
+** company
+
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :init (global-company-mode)
+    :config
+    (setq company-idle-delay 0)
+    (setq company-minimum-prefix-length 1)
+    (setq lsp-completion-provider :capf)
+    :diminish company-mode)
+
+  (with-eval-after-load 'company
+    (define-key company-active-map (kbd "M-n") nil)
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "C-n") 'company-select-next)
+    (define-key company-active-map (kbd "C-p") 'company-select-previous)
+    (define-key company-active-map (kbd "SPC") 'company-abort))
+
+#+end_src
+
+** disable company in shell
+
+#+begin_src emacs-lisp
+  (add-hook 'shell-mode-hook (lambda () (company-mode -1)) 'append)
+#+end_src
+
+** company-box
+
+Modify the shape of company box
+
+  #+begin_src emacs-lisp
+    (use-package company-box
+      :after company
+      :hook (company-mode . company-box-mode)
+      )
+  #+end_src
+
+** company-prescient
+
+list completion based on frequency
+
+#+begin_src emacs-lisp
+  (use-package company-prescient
+    :after company
+    :config
+    (company-prescient-mode 1)
+    ;; Remember candidate frequencies across sessions
+    (prescient-persist-mode 1)
+    )
+#+end_src
+
+* Utils
+** camelCase
+
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook 'subword-mode) 
+#+end_src
+
+** line numbers
+
+Draw line numbers for prog-mode
+
+#+begin_src emacs-lisp
+  (defun hz/display-numbers-hook ()
+    (display-line-numbers-mode t)
+    )
+  (add-hook 'prog-mode-hook 'hz/display-numbers-hook)
+  ;; (add-hook 'web-mode-hook 'hz/display-numbers-hook)
+#+end_src
+
+** TODO flycheck

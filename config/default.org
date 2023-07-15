@@ -1,0 +1,131 @@
+#+TITLE : Default config file emacs
+#+AUTHOR : DUREL Enzo
+#+EMAIL : enzo.durel@gmail.com
+
+* commands redefinition
+** remove C-Z and C-x C-Z
+
+#+begin_src emacs-lisp
+  (global-set-key "\C-x\C-z" nil)
+  (global-set-key "\C-z" nil)
+  (global-set-key (kbd "C-z") nil)
+  (global-set-key (kbd "C-x C-z") nil)
+
+  ;; (global-set-key (kbd "C-z") 'undo)
+#+end_src
+    
+* sauvegarde rapide
+
+Correct slow save
+
+#+begin_src emacs-lisp
+  (setq vc-handled-backends nil)
+#+end_src
+ 
+* default file access
+
+Set a default directory
+
+#+begin_src emacs-lisp
+  ;; (setq default-directory "~/")
+#+end_src
+
+* startup message
+
+Remove startup message
+
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t)
+#+end_src
+
+* tool/menu/scroll bar
+
+Disable tool, menu, scrool bar.
+
+#+begin_src emacs-lisp
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (toggle-scroll-bar -1)
+  (defun hz/disable-scroll-bars (frame)
+    (modify-frame-parameters frame
+			     '((vertical-scroll-bars . nil)
+			       (horizontal-scroll-bars . nil))))
+  (add-hook 'after-make-frame-functions 'hz/disable-scroll-bars)
+#+end_src
+
+* frame margin
+
+Change horizontal emacs margin left, right
+
+#+begin_src emacs-lisp
+  (set-window-margins (selected-window) 0 0)
+#+end_src
+	
+* smooth scrolls
+
+Scrool smoothy in Emacs
+
+#+begin_src emacs-lisp
+  (setq scroll-conservatively 100)  
+#+end_src
+
+* no auto-saves
+
+Disable example.txt~ and #example.txt# files
+
+#+begin_src emacs-lisp
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+#+end_src
+
+* shell open in current buffer
+
+Open the shell in the buffer where M-x shell is call, by default open in
+another.
+Usefull for shell-pop compability
+
+#+begin_src emacs-lisp
+  (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)  
+#+end_src 
+
+* column fill indicator
+
+Show fill column indicator or not : 1 to show, 0 to not show
+Redefine the column fill length
+
+#+begin_src emacs-lisp
+  (setq display-fill-column-indicator-column 79)
+  (global-display-fill-column-indicator-mode 0)
+  (set-face-foreground 'fill-column-indicator "#000000")
+#+end_src
+    
+* paren mode
+
+Show match parentheses
+
+#+begin_src emacs-lisp
+  (show-paren-mode 1)
+#+end_src
+
+* suppr select
+
+#+begin_src emacs-lisp
+  (delete-selection-mode t)
+#+end_src
+
+* sound at loading
+
+Add an audio at emacs opening
+
+#+begin_src emacs-lisp
+  ;; (require 'sound-wav)
+  ;; (sound-wav-play "/home/hozen/.emacs.d/<a-completer>.wav")
+#+end_src
+
+* scroll after end of buffer
+
+Continue to scroll even if end of current buffer
+
+#+begin_src emacs-lisp
+  (setq doc-view-continuous t)
+#+end_src

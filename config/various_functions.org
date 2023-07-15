@@ -1,0 +1,42 @@
+#+TITLE : Various functions config file emacs
+#+AUTHOR : DUREL Enzo
+#+EMAIL : enzo.durel@gmail.com
+
+* copy a line
+
+Copy a line with C-c l c key
+
+#+begin_src emacs-lisp
+  (defun daedreth/copy-whole-line ()
+    "Copies a line without regard for cursor position."
+    (interactive)
+    (save-excursion
+      (kill-new
+       (buffer-substring
+        (point-at-bol)
+        (point-at-eol)))))
+  ;; (global-set-key (kbd "C-c l c") 'daedreth/copy-whole-line)
+#+end_src
+	
+* sudo save
+
+Make a save with sudo
+
+#+begin_src emacs-lisp
+  (defun sudo-save ()
+    (interactive)
+    (if (not buffer-file-name)
+	(write-file (concat "/sudo:root@localhost:" (ido-read-file-name "File:")))
+      (write-file (concat "/sudo:root@localhost:" buffer-file-name))))  
+#+end_src
+
+* open term
+
+Open a terminal with the current directory
+
+#+begin_src emacs-lisp
+  (defun hz/open-in-terminal ()
+    (interactive)
+    (start-process "terminal" nil "urxvt")
+    )
+#+end_src
