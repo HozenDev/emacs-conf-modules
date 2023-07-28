@@ -27,6 +27,8 @@ Set to azerty
 
 Add or redefine some commande shortcuts
 
+**** New command
+
 #+begin_src emacs-lisp
   (define-key xah-fly-leader-key-map (kbd "w") 'cp/org-edit-special-capture-src-dwim)
   (define-key xah-fly-leader-key-map (kbd "a") 'avy-goto-char-timer)
@@ -34,6 +36,12 @@ Add or redefine some commande shortcuts
   (define-key xah-fly-leader-key-map (kbd "l x") 'mark-next-like-this)
   (define-key xah-fly-leader-key-map (kbd "i u") 'hz/open-in-terminal)
   (define-key xah-fly-leader-key-map (kbd "_") 'shell-pop)
+#+end_src
+
+**** Redefine command
+
+#+begin_src emacs-lisp
+  ;; (define-key xah-fly-leader-key-map (kbd "i e") 'consult-find)
 #+end_src
 
 *** Server command mode fix
@@ -53,8 +61,12 @@ Add or redefine some commande shortcuts
     (define-key xah-fly-leader-key-map (kbd "w") 'cp/org-edit-special-capture-src-dwim)
     (define-key xah-fly-leader-key-map (kbd "a") 'avy-goto-char-timer)
     (define-key xah-fly-leader-key-map (kbd "l a") 'ace-window)
-    (define-key xah-fly-leader-key-map (kbd "i u") 'zen-open-in-terminal)
-    (define-key xah-fly-leader-key-map (kbd "_") 'shell-pop))
+    (define-key xah-fly-leader-key-map (kbd "l x") 'mark-next-like-this)
+    (define-key xah-fly-leader-key-map (kbd "i u") 'hz/open-in-terminal)
+    (define-key xah-fly-leader-key-map (kbd "_") 'shell-pop)
+
+    ;; (define-key xah-fly-leader-key-map (kbd "i e") 'consult-find)
+    )
 
   (if (daemonp)
       (add-hook 'server-after-make-frame-hook 'hz/server-fix-up))

@@ -151,3 +151,81 @@ mark the next occurence of selected text
     :diminish)
 #+end_src
 
+* vertico
+
+#+begin_src emacs-lisp
+  (use-package vertico
+
+    ;;charger les extensions de vertico
+    :load-path "straight/build/vertico/extensions"
+    :custom
+    (vertico-cycle t)
+    :custom-face
+    (vertico-current ((t (:background "#3a3f5a"))))
+    :config
+
+    ;; Prefix the current candidate with “» ”. From
+    ;; https://github.com/minad/vertico/wiki#prefix-current-candidate-with-arrow
+    (advice-add #'vertico--format-candidate :around
+                (lambda (orig cand prefix suffix index _start)
+                  (setq cand (funcall orig cand prefix suffix index _start))
+                  (concat
+                   (if (= vertico--index index)
+                       (propertize "» " 'face 'vertico-current)
+                     "  ")
+                   cand)))
+
+    ;;pour activer vertico directory (remonte d'un dossier à chaque fois, pratique ! )
+    (require 'vertico-directory)
+    ;; (define-key vertico-map [remap backward-kill-word] #'vertico-directory-up)
+    ;; (define-key vertico-map [remap xah-delete-backward-char-or-bracket-text] #'vertico-directory-up)
+    (define-key vertico-map [remap open-line] #'vertico-directory-up)
+    ;; (define-key vertico-map [remap delete-backward-char] #'vertico-directory-up)
+
+    ;; pour pouvoir jump à une entrée
+    ;; (define-key vertico-map [remap avy-goto-char] #'vertico-quick-jump)
+
+    (with-eval-after-load 'avy
+
+      (defun divide-list-in-two-equal-part (lst)
+        (let ((len (length lst)))
+          (list (seq-subseq lst 0 (/ len 2))
+                (seq-subseq lst (/ len 2)))))
+
+      (setq avy-keys-alist-two-part (divide-list-in-two-equal-part (mapconcat 'char-to-string '(?\ ?e ?u ?i ?a ?s ?t ?r ?n) "")))
+
+      ;; lorsqu'il y a une touche
+      (setq vertico-quick1 (car avy-keys-alist-two-part))
+      ;; deux touches
+      (setq vertico-quick2 (cadr avy-keys-alist-two-part))
+
+      (require 'vertico-quick)
+      (use-package vertico-quick
+        :straight nil
+        :after vertico
+        :custom (test 2)
+        :bind (:map vertico-map
+                    ("C-<return>" . vertico-quick-exit))))
+
+    (vertico-mode))
+#+end_src
+
+* consult
+
+#+begin_src emacs-lisp
+  (use-package consult
+    :config
+
+    ;; ordre dans la commande consult-buffer
+    (setq consult-buffer-sources
+          '(consult--source-hidden-buffer
+            consult--source-modified-buffer
+            consult--source-buffer
+            consult--source-bookmark
+            consult--source-recent-file
+            consult--source-file-register
+            consult--source-project-buffer
+            consult--source-project-recent-file))
+
+    (setq completion-in-region-function #'consult-completion-in-region))
+#+end_src

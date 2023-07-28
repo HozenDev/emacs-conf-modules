@@ -19,8 +19,10 @@
 # not ignore lisp dir
 !/lisp
 
-# not ignore images
+# not ignore images dir
 !/img
 
-# not ignore images
+# not ignore var dir
 !/var
+/var/*
+!/var/custom.el

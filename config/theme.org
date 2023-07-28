@@ -238,32 +238,22 @@ Dashboard (opening frame, buffer)
     (add-hook 'dashboard-mode-hook 'hz/dashboard-banner)
     :config
     (setq dashboard-center-content t)
-    (setq dashboard-init-info " [DASHBOARD] [CONFIG: C-c e] ")
+    (setq dashboard-init-info "[DASHBOARD] [CONFIG: hz/config-visit] [RELOAD: hz/config-reload]")
     (setq dashboard-set-footer nil)
-    (setq dashboard-startup-banner (expand-file-name "hozen_emacs.png" image-directory))
+    (setq dashboard-startup-banner (expand-file-name "hozen_emacs_logo_zen.png" image-directory))
     (setq dashboard-set-heading-icons t)
     (setq dashboard-set-file-icons t)
-    (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
-                                                       :height 1.1
-                                                       :v-adjust -0.05
-                                                       :face 'font-lock-keyword-face))
+    ;; (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
+    ;;                                                    :height 1.1
+    ;;                                                    :v-adjust -0.05
+    ;;                                                    :face 'font-lock-keyword-face))
     (setq dashboard-items '(
                             (projects . 5)
                             (recents  . 5)
                             (bookmarks . 5)))
-    (setq dashboard-image-banner-max-width 600)
-    (setq dashboard-image-banner-max-height 500)
+    ;; (setq dashboard-image-banner-max-width 300)
+    ;; (setq dashboard-image-banner-max-height 500)
     (dashboard-setup-startup-hook))
 
-
-  ;; (use-package dashboard
-  ;;   :ensure t
-  ;;   :config
-  ;;   (dashboard-setup-startup-hook)
-  ;;   (setq dashboard-startup-banner "~/.emacs.d/img/hozen_emacs.png")
-
-  ;;   )
-
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-
 #+end_src

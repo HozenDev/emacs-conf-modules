@@ -129,3 +129,10 @@ Continue to scroll even if end of current buffer
 #+begin_src emacs-lisp
   (setq doc-view-continuous t)
 #+end_src
+
+* scrath set to orgmode by default
+
+#+begin_src emacs-lisp
+  (defvaralias 'major-mode-for-buffer-scratch 'initial-major-mode)
+  (setq major-mode-for-buffer-scratch 'org-mode)
+#+end_src
