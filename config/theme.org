@@ -240,19 +240,52 @@ Dashboard (opening frame, buffer)
     (setq dashboard-center-content t)
     (setq dashboard-init-info "[DASHBOARD] [CONFIG: hz/config-visit] [RELOAD: hz/config-reload]")
     (setq dashboard-set-footer nil)
+
+    ;; Logo hozen nature
     (setq dashboard-startup-banner (expand-file-name "hozen_emacs_logo_zen.png" image-directory))
+
+    ;; Photos doumbe jordan tes mow
+    ;; (setq dashboard-startup-banner (expand-file-name "doumbe_jordan_tes_mow.jpg" image-directory))
+    ;; (setq dashboard-image-banner-max-width 800)
+    ;; (setq dashboard-image-banner-max-height 800)
+
     (setq dashboard-set-heading-icons t)
     (setq dashboard-set-file-icons t)
-    ;; (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
-    ;;                                                    :height 1.1
-    ;;                                                    :v-adjust -0.05
-    ;;                                                    :face 'font-lock-keyword-face))
+
+    ;; To show info about the packages loaded and the init time:
+    (setq dashboard-set-init-info t)
+    (setq dashboard-set-navigator t)
+    (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
+                                                       :height 1.1
+                                                       :v-adjust -0.05
+                                                       :face 'font-lock-keyword-face))
     (setq dashboard-items '(
                             (projects . 5)
                             (recents  . 5)
                             (bookmarks . 5)))
+
     ;; (setq dashboard-image-banner-max-width 300)
     ;; (setq dashboard-image-banner-max-height 500)
+    (setq dashboard-navigator-buttons
+          `(
+            ;; Ligne 1 - Site web perso
+            ((,(all-the-icons-octicon "browser" :height 1.1 :v-adjust 0.0)
+              "Homepage"
+              "perso isima"
+              (lambda (&rest _) (browse-url "https://perso.isima.fr/~endurel"))))
+
+            ;; Ligne 2 - ENT
+            ((,(all-the-icons-faicon "graduation-cap" :height 1.1 :v-adjust 0.0)
+              "ENT"
+              "ent login"
+              (lambda (&rest _) (browse-url "https://ent.uca.fr/cas/login"))))
+
+            ;; Ligne 3 - Chat GTP
+            ((, (all-the-icons-octicon "code" :height 1.1 :v-adjust 0.0)
+                "Chat GPT"
+                "chat gpt"
+                (lambda (&rest _) (browse-url "https://chat.openai.com/"))))
+            ))
     (dashboard-setup-startup-hook))
 
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))

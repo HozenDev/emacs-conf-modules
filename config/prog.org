@@ -14,6 +14,7 @@
              c-mode
              python-mode
              java-mode
+             cs-mode
              )
             . lsp)
 
@@ -93,6 +94,17 @@ Define default java server
 #+end_src
 
 * Languages
+** SQL
+
+#+begin_src emacs-lisp
+  (add-to-list 'exec-path "~/go/bin")
+
+  (add-hook 'sql-mode-hook 'lsp)
+  (setq lsp-sqls-workspace-config-path nil)
+  (setq lsp-sqls-connections
+        '(((driver . "mssql") (dataSourceName . "Server=dure0010-sql-server.database.windows.net;Database=cs-dsa-4513-sql-db;User Id=dure0010;Password=CS4513Password;"))))
+#+end_src
+
 ** C
 *** indenting
 
@@ -277,7 +289,7 @@ Processing mode
     :ensure t
     :init (global-company-mode)
     :config
-    (setq company-idle-delay 0)
+    (setq company-idle-delay 0.2)
     (setq company-minimum-prefix-length 1)
     (setq lsp-completion-provider :capf)
     :diminish company-mode)
@@ -342,3 +354,15 @@ Draw line numbers for prog-mode
 #+end_src
 
 ** TODO flycheck
+* Copilot
+
+#+begin_src emacs-lisp
+  (use-package copilot
+    :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+    :ensure t)
+
+  (add-hook 'prog-mode-hook 'copilot-mode)
+
+  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+#+end_src

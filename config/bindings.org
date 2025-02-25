@@ -42,6 +42,7 @@ Add or redefine some commande shortcuts
 
 #+begin_src emacs-lisp
   ;; (define-key xah-fly-leader-key-map (kbd "i e") 'consult-find)
+  (define-key xah-fly-command-map (kbd "n") 'swiper-isearch)
 #+end_src
 
 *** Server command mode fix

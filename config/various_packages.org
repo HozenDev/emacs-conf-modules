@@ -229,3 +229,72 @@ mark the next occurence of selected text
 
     (setq completion-in-region-function #'consult-completion-in-region))
 #+end_src
+
+* fussy
+
+Completion with a group of characters
+
+#+begin_src emacs-lisp
+  (use-package fussy
+    :ensure t
+    :config
+    (push 'fussy completion-styles)
+    (setq
+     ;; For example, project-find-file uses 'project-files which uses
+     ;; substring completion by default. Set to nil to make sure it's using
+     ;; flx.
+     completion-category-defaults nil
+     completion-category-overrides nil))
+#+end_src
+
+* ivy
+
+#+begin_src emacs-lisp
+  ;; Chargement des packages Ivy, Counsel et Swiper
+  (use-package ivy
+    :ensure t
+    :config
+    (ivy-mode 1))
+
+  (use-package counsel
+    :ensure t)
+
+  (use-package swiper
+    :ensure t)
+
+  ;; Correct swiper slow
+  (setq swiper-use-visual-line nil)
+  (setq swiper-use-visual-line-p (lambda (a) nil))
+
+  ;; Configuration supplémentaire d'Ivy
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+
+  ;; Utilisation de Counsel pour certaines commandes Emacs
+  (counsel-mode 1)
+#+end_src
+
+* org ai
+
+AI for orgmode, not working because openai needs money :-) (free api trial expired)
+
+#+begin_src emacs-lisp
+  ;; (straight-use-package
+  ;;  '(org-ai :type git :host github :repo "rksm/org-ai"
+  ;;           :local-repo "org-ai"
+  ;;           :files ("*.el" "README.md" "snippets")))
+
+  ;; (use-package org-ai
+  ;;   :straight (:type git :host github :repo "rksm/org-ai" :local-repo "org-ai" :files ("*.el" "README.md" "snippets")))
+
+  ;; (setq org-ai-openai-api-token "")
+#+end_src
+
+* citeproc
+
+Package for use custom csl bibliography org export
+
+#+begin_src emacs-lisp
+    (use-package citeproc
+      :ensure t)
+#+end_src

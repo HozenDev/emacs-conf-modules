@@ -15,6 +15,10 @@
   (use-package org :straight (:type built-in))
 #+end_src
 
+#+begin_src emacs-lisp
+  (add-to-list 'exec-path "~/programmes/latex/usr/local/texlive/2024/bin/x86_64-linux")
+#+end_src
+
 ** org-contrib
 
 #+begin_src emacs-lisp
@@ -97,6 +101,7 @@ Indent in org block
 #+begin_src emacs-lisp 
   (defun hz/org-mode-hook ()
     (visual-line-mode 1) ;; print a line on few lines when too long
+    (company-mode -1)
     )
   (add-hook 'org-mode-hook 'hz/org-mode-hook)
 #+end_src
@@ -137,4 +142,14 @@ If minted a small python program is needed to run correctly minted: Pygments
   ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
   ;; (setq org-latex-pdf-process
   ;;       '("%latex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+#+end_src
+
+** utf 8 export
+
+#+begin_src emacs-lisp
+;; UTF-8 as default encoding
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
 #+end_src
