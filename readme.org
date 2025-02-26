@@ -1,7 +1,7 @@
-* Ma Config Emacs
-** Résumé
+* Hozen Emacs Configuration
+** Introduction
 
-Fichiers de configuration de mon emacs. Divisé en modules de configuration =config/*.org=
+These are my emacs files configuration. Divided in modules of configuration =config/*.org=.
 
 ** Installation
 
@@ -9,22 +9,34 @@ Fichiers de configuration de mon emacs. Divisé en modules de configuration =con
   git clone [url]
 #+end_src
 
-** Outils
+*** Copilot
+
+Copilot will create an error at first launch. You need to install npm (Node.js package installer)
+
+#+begin_src emacs-lisp
+  sudo pacman -Sy npm
+#+end_src
+
+Then, you need to run the =copilot-install-server= function in Emacs to install the server.
+
+Finally relaunch Emacs and everything should be fine.
+
+** Tools
 
 - Emacs
 
 ** Versions
 
-*Dernière version stable :* 1.0
+*Last Stable Version :* 1.0
 
-*Dernière version :* 1.0
+*Last Version :* 1.0
 
-[[../../tags][Liste des versions]]
+[[../../tags][List of versions]]
 
-** Auteurs
+** Authors
 
 - DUREL Enzo
 
-** Licence
+** License
 
-Le projet est *open-source*
+The project is *open-source*
